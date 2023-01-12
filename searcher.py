@@ -87,6 +87,3 @@ def search_database(filename, parsed_phone_numbers, rate_center="ALL", carrier="
                 print(f"Wrote {len(valid_phone_info)} numbers to {output}")
             table.clear()
     return valid_phone_numbers # Return this list so if we wanna do something with it
-
-if __name__ == '__main__':
-    search_database('phone_numbers.csv', generate_combinations('9706851176'), carrier="VERIZON") 
