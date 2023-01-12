@@ -63,12 +63,12 @@ def search_database(filename, parsed_phone_numbers, rate_center="ALL", carrier="
     for chunk in chunk_iter:
         for chunk_value in chunk.values:
             for parsed_phone_number in parsed_phone_numbers:
-                if chunk_value.tolist()[7] == 'Y' and include_contaminated is True:
-                    continue # Contaminated Filter
-                if rate_center != "ALL" and chunk_value.tolist()[9] in rate_center:
-                    continue # Rate Center Filter
-                if carrier != "ALL" and chunk_value.tolist()[12] in carrier:
-                    continue # Carrier Filter
+                if chunk_value.tolist()[7] == 'Y' and include_contaminated is False:
+                    break # Contaminated Filter
+                if rate_center != "ALL" and chunk_value.tolist()[9] not in rate_center:
+                    break # Rate Center Filter
+                if carrier != "ALL" and carrier not in str(chunk_value.tolist()[12]):
+                    break # Carrier Filter
                 if chunk_value[2] == int(parsed_phone_number[0]) and chunk_value[3] == int(parsed_phone_number[1]): # Check if there's a phone number in the directory that matches the area code and exchange
                     joined_phone_number = [join_phone(parsed_phone_number)] # Join the parsed phone number together
                     phone_info_list = chunk_value.tolist() # Convert the info to a list
@@ -87,3 +87,6 @@ def search_database(filename, parsed_phone_numbers, rate_center="ALL", carrier="
                 print(f"Wrote {len(valid_phone_info)} numbers to {output}")
             table.clear()
     return valid_phone_numbers # Return this list so if we wanna do something with it
+
+if __name__ == '__main__':
+    search_database('phone_numbers.csv', generate_combinations('9706851176'), carrier="VERIZON") 

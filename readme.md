@@ -9,6 +9,8 @@ To get started, simply clone the repository and run
 After that finishes, go ahead and run
 `python phonebrute.py -h` this should show you all of the options.
 
+
+
 Example:
 ![Example](https://files.catbox.moe/783xh3.gif)
 
