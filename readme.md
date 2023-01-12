@@ -9,6 +9,28 @@ To get started, simply clone the repository and run
 After that finishes, go ahead and run
 `python phonebrute.py -h` this should show you all of the options.
 
+```
+>python phonebrute.py -h
+usage: Phonebrute [-h] [-p] [-iC] [-rC RATECENTER] [-c CARRIER] [-o OUTPUT] NUM
+
+Generate valid phone numbers with NPA-NXX databases
+
+positional arguments:
+  NUM                   Phone number to search for in the database
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p, --print           Print the results in a table
+  -iC, --include_contaminated
+                        Include Contaminated Entries
+  -rC RATECENTER, --ratecenter RATECENTER
+                        Search For a certain rate center
+  -c CARRIER, --carrier CARRIER
+                        Search for a certain carrier
+  -o OUTPUT, --output OUTPUT
+                        Output file
+```
+
 Example:
 ![Example](https://files.catbox.moe/783xh3.gif)
 
