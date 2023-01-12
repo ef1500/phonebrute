@@ -7,7 +7,7 @@ To get started, simply clone the repository and run
 `pip install -r requirements.txt`
 
 After that finishes, go ahead and run
-`python phonebrute.py -h` this should show you all of the options.
+`python phonebrute.py -h` to show all of the options.
 
 ```
 >python phonebrute.py -h
