@@ -11,7 +11,7 @@ After that finishes, go ahead and run
 
 ```
 >python phonebrute.py -h
-usage: Phonebrute [-h] [-p] [-iC] [-rC RATECENTER] [-c CARRIER] [-o OUTPUT] NUM
+usage: Phonebrute [-h] [-nP] [-iC] [-rC RATECENTER] [-c CARRIER] [-o OUTPUT] NUM
 
 Generate valid phone numbers with NPA-NXX databases
 
@@ -20,7 +20,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p, --print           Print the results in a table
+  -nP, --noprint        Don't print the results in a table
   -iC, --include_contaminated
                         Include Contaminated Entries
   -rC RATECENTER, --ratecenter RATECENTER
