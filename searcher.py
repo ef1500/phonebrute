@@ -113,7 +113,15 @@ def search_database(filename, parsed_phone_numbers, rate_center="ALL", carrier="
         chunk = chunk.fillna("NONE")
         for parsed_phone_number in parsed_phone_numbers:
             # Query for when both the NPA and the NXX numbers are equal to one another
-            db_query = chunk.query(f'npa=={int(parsed_phone_number[0])} & nxx=={int(parsed_phone_number[1])}')
+            # Apparently using an @ symbol here was the issue, f strings are a no go.
+            db_query = chunk.query('npa==@parsed_phone_number[0] & nxx==@parsed_phone_number[1]')
+            # Sometimes it will still act weird and hang, then return nothing
+            # so lets try the other way if the @ method fails.
+            if db_query.empty:
+                # Use the other method
+                # Weird formatting because the line was too long
+                db_query = chunk.query(f'npa=={int(parsed_phone_number[0])} & \
+                                       nxx=={int(parsed_phone_number[1])}')
             # Make sure we're not operating on an empty set
             if not db_query.empty:
                 # Check if the include contaminated argument is True
