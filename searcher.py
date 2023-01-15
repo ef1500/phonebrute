@@ -102,9 +102,28 @@ def search_database(filename, parsed_phone_numbers, rate_center="ALL", carrier="
     new_column_names = ['region','state','npa','nxx','x','status','code_holder',
                         'contaminated','tn_not_available','rate_center','block_effective_date',
                         'block_available_date','carrier','ocn','date_assigned']
+    # Specify the dtypes for each column
+    column_dtypes = {
+        'region' : str,
+        'state' : str,
+        'npa' : int,
+        'nxx' : int,
+        'x' : str,
+        'status' : str,
+        'code_holder' : str,
+        'contaminated' : str,
+        'tn_not_available' : str,
+        'rate_center' : str,
+        'block_effective_date' : str,
+        'block_available_date' : str,
+        'carrier' : str,
+        'ocn' : str,
+        'date_assigned' : str
+    }
 
     chunk_iter = pd.read_csv(filename, names=new_column_names, 
-                             na_values = 'NONE', chunksize=10000) # Read 10000 rows at a time
+                             na_values = 'NONE', chunksize=10000, 
+                             skiprows=[0], dtype=column_dtypes) # Read 10000 rows at a time
     table = [] # Create table
     headers = ["Phone Number", "State", "Exchange", "Contaminated", "Rate Center",
                "Block Avaliable Date", "Carrier", "Date Assigned"] # Create header
@@ -113,21 +132,25 @@ def search_database(filename, parsed_phone_numbers, rate_center="ALL", carrier="
         chunk = chunk.fillna("NONE")
         for parsed_phone_number in parsed_phone_numbers:
             # Query for when both the NPA and the NXX numbers are equal to one another
-            # Apparently using an @ symbol here was the issue, f strings are a no go.
-            db_query = chunk.query('npa==@parsed_phone_number[0] & nxx==@parsed_phone_number[1]')
+            db_query = chunk.query(f'npa=={int(parsed_phone_number[0])} & \
+                                   nxx=={int(parsed_phone_number[1])}')
             # Sometimes it will still act weird and hang, then return nothing
+            # It's because the dtypes act wacky when we don't specify them
+            # Even though we fixed it, let's be absolutely sure nothing goes wrong
             # so lets try the other way if the @ method fails.
             if db_query.empty:
-                # Use the other method
-                # Weird formatting because the line was too long
-                db_query = chunk.query(f'npa=={int(parsed_phone_number[0])} & \
-                                       nxx=={int(parsed_phone_number[1])}')
+                # Use the other method, just in case
+                # Query for when both the NPA and the NXX numbers are equal to one another
+                # Apparently using an @ symbol here was the issue, f strings are a no go.
+                db_query = chunk.query('npa==@parsed_phone_number[0] & \
+                                       nxx==@parsed_phone_number[1]')
             # Make sure we're not operating on an empty set
             if not db_query.empty:
                 # Check if the include contaminated argument is True
                 if include_contaminated is True:
                     # If it's true, then query for when both Y and N are present
-                    db_query = db_query.query('contaminated=="Y" | contaminated == "N"')
+                    db_query = db_query.query('contaminated=="Y" | contaminated == "N" |\
+                                              contaminated == "NONE"')
                 # If include contaminated is False, just query normally
                 if include_contaminated is False:
                     db_query = db_query.query('contaminated=="N"')
@@ -179,5 +202,7 @@ def search_database(filename, parsed_phone_numbers, rate_center="ALL", carrier="
             print(f"Wrote {len(valid_phone_numbers)} numbers to {output}")
         # Clear the table
         table.clear()
+    if len(valid_phone_numbers) == 0:
+        print("[Phonebrute] Found no phone numbers for that range. Try using the --include_contaminated argument.")
     # Return the list of valid phone numbers for integration with other programs
     return valid_phone_numbers # Return this list so if we wanna do something with it

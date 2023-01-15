@@ -1,2 +1,2 @@
-__pycache__/db_downloader.cpython-38.pyc
-.vscode/launch.json
+__pycache__/*.*
+.vscode/*.*

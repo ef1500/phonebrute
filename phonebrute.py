@@ -27,6 +27,6 @@ print(banner)
 db_downloader.download_and_extract('phone_numbers.csv') #  Download Database First Thing if we don't have it
 
 numbers = searcher.generate_numbers(args.NUMBER)
-print(f"[PHONEBRUTE]: Generated {len(numbers)} phone numbers")
+print(f"[PHONEBRUTE] Generated {len(numbers)} phone numbers")
 searcher.search_database('phone_numbers.csv', numbers, rate_center=args.ratecenter, carrier=args.carrier,
                          include_contaminated=args.include_contaminated, noprint_table=args.noprint, output=args.output)
