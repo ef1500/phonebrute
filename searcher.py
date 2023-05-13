@@ -1,3 +1,4 @@
+# LEGACY SEARCHER - NO LONGER USED
 # search through the file
 # phonebrute 555XXXXX43 will return a list of all valid phone numbers in that range
 import itertools

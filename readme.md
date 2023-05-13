@@ -27,8 +27,10 @@ optional arguments:
                         Search For a certain rate center
   -c CARRIER, --carrier CARRIER
                         Search for a certain carrier
+  -s STATE, --state STATE
+                        Search for numbers from a specific state by their abbreviation
   -o OUTPUT, --output OUTPUT
-                        Output file
+                        Output file, csv or json, defaults to json
 ```
 
 
@@ -39,6 +41,7 @@ Example:
 ## Features
 - Filter by Rate Center (use the -rC option)
 - Filter by Carrier (use the -c option)
-- Output to a text file (use the -o option)
+- Filter by State (use the -s option)
+- Output to a csv or json file (use the -o option)
 - Include contaminated Entries (use the -iC option)
 - Don't print to the terminal (use the -nP option)
